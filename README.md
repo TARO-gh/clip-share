@@ -17,7 +17,7 @@
 - サーバPCにはDockerとDocker Composeがインストールされている
 
 ## セットアップ方法
-### 1.クリックが保存されるディレクトリをマウント
+### 1.クリップが保存されるディレクトリをマウント
 マウントポイントを作成
 ```bash
 sudo mkdir -p /mnt/shared_folder
