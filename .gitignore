@@ -1,0 +1,7 @@
+app/replay
+app/shared_folder
+app/client_secret.json
+app/token.json
+**/__pycache__/
+app/.env
+app/metadata.json
