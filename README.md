@@ -27,7 +27,7 @@ sudo mkdir -p /mnt/shared_folder
 sudo mount -a
 ```
 
-### 2. リポジトリを自身の環境にクローンします．
+### 2. リポジトリを自身の環境にクローン
 ```bash
 git clone https://github.com/TARO-gh/clip-share.git
 cd clip-share
