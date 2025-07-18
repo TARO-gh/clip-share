@@ -24,7 +24,7 @@ sudo mkdir -p /mnt/shared_folder
 ```
 `/etc/fstab`に以下を追記
 ```bash
-//<クリップが保存されるPCのIP>/Users/you/Videos/clips /mnt/shared_folder cifs username=<Microsoftアカウントのユーザ名>,password=<Microsoftアカウントのパスワード>,uid=1000,gid=1000,iocharset=utf8 0 0
+//<ゲーミングPCのIP>/Users/you/Videos/clips /mnt/shared_folder cifs username=<Microsoftアカウントのユーザ名>,password=<Microsoftアカウントのパスワード>,uid=1000,gid=1000,iocharset=utf8 0 0
 ```
 マウント
 ```bash
