@@ -13,25 +13,40 @@
 - Youtubeの配信アーカイブにも，クリップ時のタイムスタンプをコメントで記録
 
 ## セットアップ方法
-### 1. リポジトリを自身の環境にクローンします．
+### 1.クリックが保存されるディレクトリをマウント
+マウントポイントを作成
+```bash
+sudo mkdir -p /mnt/shared_folder
+```
+`/etc/fstab`に以下を追記
+```bash
+//<クリップが保存されるPCのIP>/Users/you/Videos/clips /mnt/shared_folder cifs username=<Microsoftアカウントのユーザ名>,password=<Microsoftアカウントのパスワード>,uid=1000,gid=1000,iocharset=utf8 0 0
+```
+マウント
+```bash
+sudo mount -a
+```
+
+### 2. リポジトリを自身の環境にクローンします．
 ```bash
 git clone https://github.com/TARO-gh/clip-share.git
 cd clip-share
 ```
 
-### 2. Google CloudでOAuth2.0クライアントIDを発行
+### 3. Google CloudでOAuth2.0クライアントIDを発行
 Google CloudでYoutube Data API v3を有効にしたプロジェクトを作成．
 OAuth 2.0 クライアント IDを発行し，client_secret.jsonをダウンロード．
 `app/`直下に配置してください．
 
-### 3. .envと各ディレクトリの作成
+### 4. .envと各ディレクトリの作成
 `app/.env.example`を参考に`app/.env`を作成してください．
 
-### 4. dockerコンテナのビルド&アタッチ
+### 5. dockerコンテナのビルド&アタッチ
 ```bash
 docker compose up -d --build
+docker compose exec clip_share_monitoring bash
 ```
-### 5. authorized.pyの実行
+### 6. authorized.pyの実行
 以下を実行．
 ```bash
 python3 authorized.py
@@ -39,6 +54,10 @@ python3 authorized.py
 ここでターミナルに表示されるリンクをクリックし，自身のGoogleアカウントで認証
 進めると「ページが表示できません」となるので，そのページのURLに含まれる`code`をコピー．
 ターミナルにペーストし認証を完了すると，`app/`直下にtoken.jsonが保存される．
+あとはデタッチしてセットアップ完了．
+```bash
+exit
+```
 
 
 ## Youtube Data APIについて
