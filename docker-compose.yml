@@ -10,7 +10,7 @@ services:
       - ./app:/home/appuser/app
       - /mnt/shared_folder/:/home/appuser/app/shared_folder/
     network_mode: host
-    #command: python monitoring.py
+    command: python monitoring.py
     
   clip_share_http:
     restart: always
