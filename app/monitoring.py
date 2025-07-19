@@ -23,6 +23,9 @@ DOWNLOAD_FOLDER_PATH = os.getenv('DOWNLOAD_FOLDER_PATH')
 # 監視対象のPCのIPアドレス
 MONITORING_PC_IP = os.getenv('MONITORING_PC_IP')
 
+# 転送元PCからクリップを削除するかどうか
+DELETE_AFTER_TRANSFER = os.getenv('DELETE_AFTER_TRANSFER', 'False').lower() == 'true'
+
 # 配信中のvideo_idリスト
 live_streams = {}
 
@@ -57,7 +60,8 @@ class NewVideoHandler(FileSystemEventHandler):
                 with open("./metadata.json", 'w') as f:
                     json.dump(dict, f, indent=2)
                 print(f"ファイルをダウンロード: {dest_path}")
-                os.remove(src_path)
+                if DELETE_AFTER_TRANSFER:
+                    os.remove(src_path)
                 print("コメントを配信辞書に登録します")
                 # ここから配信辞書に登録
                 youtube = youtube_handler.get_authenticated_service()
