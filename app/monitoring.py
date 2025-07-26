@@ -26,6 +26,9 @@ MONITORING_PC_IP = os.getenv('MONITORING_PC_IP')
 # 転送元PCからクリップを削除するかどうか
 DELETE_AFTER_TRANSFER = os.getenv('DELETE_AFTER_TRANSFER', 'False').lower() == 'true'
 
+# クリップ保存から何秒前のタイムスタンプを残すか
+TIMESTAMP_SECONDS = int(os.getenv('TIMESTAMP_SECONDS', 60))
+
 # 配信中のvideo_idリスト
 live_streams = {}
 
@@ -72,7 +75,7 @@ class NewVideoHandler(FileSystemEventHandler):
                 stream_start_time_jst = youtube_handler.fetch_stream_start_time(youtube, video_id)
                 save_time = dt.datetime.now(dt.timezone.utc).astimezone(dt.timezone(dt.timedelta(hours=9)))
                 elapsed_time = save_time - stream_start_time_jst
-                total_seconds = int(elapsed_time.total_seconds()) - 60 # 1分引く
+                total_seconds = int(elapsed_time.total_seconds()) - TIMESTAMP_SECONDS # TIMESTAMP_SECONDS秒前のタイムスタンプを残す
                 hours, remainder = divmod(total_seconds, 3600)
                 minutes, seconds = divmod(remainder, 60)
                 timestamp = f"(プログラムによる自動コメント)\n{hours:02}:{minutes:02}:{seconds:02}\n"
