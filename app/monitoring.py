@@ -68,6 +68,9 @@ class NewVideoHandler(FileSystemEventHandler):
                 print("コメントを配信辞書に登録します")
                 # ここから配信辞書に登録
                 youtube = youtube_handler.get_authenticated_service()
+                if not youtube:
+                    print("認証に失敗しました。YouTube APIサービスオブジェクトを取得できません。")
+                    break
                 video_id = youtube_handler.fetch_latest_live_video_id(youtube)
                 if not video_id:
                     print("現在, ライブ配信はありません。")

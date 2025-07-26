@@ -5,6 +5,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from dotenv import load_dotenv
+from google.auth.exceptions import RefreshError
 
 load_dotenv()
 
@@ -19,9 +20,14 @@ def get_authenticated_service():
     
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-            with open(TOKEN_FILE, 'w') as token:
-                token.write(creds.to_json())
+            try:
+                creds.refresh(Request())
+                with open(TOKEN_FILE, 'w') as token:
+                    token.write(creds.to_json())
+            except RefreshError as e:  # 🔧 追加：トークン無効時の処理
+                print(f"トークンのリフレッシュに失敗しました: {e}")
+                print("エラー: 有効な認証情報がありません。先にauthorize.pyを実行してください。")
+                return None
         else:
             print("エラー: 有効な認証情報がありません。先にauthorize.pyを実行してください。")
             return None
