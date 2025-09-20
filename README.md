@@ -50,7 +50,7 @@ OAuth 2.0 クライアント IDを発行し，client_secret.jsonをダウンロ�
 docker compose up -d --build
 docker compose exec clip_share_monitoring bash
 ```
-### 6. authorized.pyの実行
+### 6. authorize.pyの実行
 以下を実行．
 ```bash
 python3 authorize.py
