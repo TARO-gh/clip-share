@@ -53,7 +53,7 @@ docker compose exec clip_share_monitoring bash
 ### 6. authorized.pyの実行
 以下を実行．
 ```bash
-python3 authorized.py
+python3 authorize.py
 ```
 ここでターミナルに表示されるリンクをクリックし，自身のGoogleアカウントで認証
 進めると「ページが表示できません」となるので，そのページのURLに含まれる`code`をコピー．
