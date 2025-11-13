@@ -34,7 +34,7 @@ live_streams = {}
 
 class NewVideoHandler(FileSystemEventHandler):
     def on_created(self, event):
-        if event.src_path.endswith('.mp4'):
+        if event.src_path.endswith(('.mp4', '.mkv')):
             self.download_file(event.src_path)
 
     def download_file(self, src_path):

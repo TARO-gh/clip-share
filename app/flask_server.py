@@ -16,8 +16,8 @@ METADATA_FILE = os.getenv('METADATA_FILE')
 
 @app.route('/')
 def index():
-    # replayフォルダ内の.mp4ファイル一覧取得
-    files = [f for f in os.listdir(DOWNLOAD_FOLDER_PATH) if f.endswith('.mp4')]
+    # replayフォルダ内の.mp4と.mkvファイル一覧取得
+    files = [f for f in os.listdir(DOWNLOAD_FOLDER_PATH) if f.endswith(('.mp4', '.mkv'))]
     files.sort(reverse=True)
 
     # メタデータ読み込み
@@ -90,7 +90,7 @@ def index():
         <div id="overlay" onclick="closePopup()"></div>
         <div id="popup">
             <video id="popup-video" controls preload="metadata">
-                <source id="popup-source" src="" type="video/mp4">
+                <source id="popup-source" src="">
                 あなたのブラウザは video タグに対応していません。
             </video>
         </div>
@@ -101,7 +101,7 @@ def index():
                 {% for file in file_list %}
                     <div class="video-item">
                         <video onclick="showPopup('{{ url_for('serve_file', filename=file) }}')" preload="metadata">
-                            <source src="{{ url_for('serve_file', filename=file) }}" type="video/mp4">
+                            <source src="{{ url_for('serve_file', filename=file) }}">
                         </video>
                         <p>{{ file }}</p>
                     </div>
