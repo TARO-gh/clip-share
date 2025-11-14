@@ -119,16 +119,29 @@ def start_monitoring():
             # jsonファイルの読み込み
             with open("./metadata.json") as f:
                 dict = json.load(f)
+
+            metadata_updated = False
             #print(file_name_list)
             for idx, file_name in enumerate(file_name_list):
                 file_path = os.path.join(DOWNLOAD_FOLDER_PATH, file_name)
-                metadata_str = dict[file_path]
+                
+                metadata_str = dict.get(file_path)
+                if not metadata_str:
+                    print(f"メタデータが存在しないファイルを検出: {file_path}")
+                    dt_now_str = dt.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+                    dict[file_path] = dt_now_str
+                    metadata_updated = True
+                    metadata_str = dt_now_str
+
                 metadata_dt = dt.datetime.strptime(metadata_str, '%Y-%m-%d_%H-%M-%S')
                 if dt_now - metadata_dt >= dt.timedelta(weeks=4): 
                     os.remove(file_path)
                     del dict[file_path]
-                    with open("./metadata.json", 'w') as f:
-                        json.dump(dict, f, indent=2)
+                    metadata_updated = True
+            
+            if metadata_updated:
+                with open("./metadata.json", 'w') as f:
+                    json.dump(dict, f, indent=2)
 
             # コメント投稿
             if live_streams:
