@@ -195,8 +195,11 @@ def start_monitoring():
             print(observer.is_alive())
             observer.stop()
             observer.join()
-            print("再接続を試みます...")
             
+            print("10分待機した後に再接続を試みます...")
+            reconnect_wait_seconds = 10 * 60
+            time.sleep(reconnect_wait_seconds)
+            print("10分待機したので再接続を試みます...")
             while True:
                 try:
                     time.sleep(30)  # 30秒待機
@@ -206,7 +209,6 @@ def start_monitoring():
                     print(f"再接続成功: {SHARED_FOLDER_PATH}")
                     break
                 except Exception as re:
-                    
                     print(f"再接続失敗")
             
 
@@ -219,4 +221,3 @@ if __name__ == "__main__":
     if os.path.exists(DOWNLOAD_FOLDER_PATH):
         start_monitoring()
     
-
