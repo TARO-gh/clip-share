@@ -106,14 +106,14 @@ def start_monitoring():
         dict = {}
         with open("./metadata.json", 'w') as f:
             json.dump(dict, f, indent=2)
-    print(f"監視開始: {SHARED_FOLDER_PATH}")
+    print(f"監視開始: {SHARED_FOLDER_PATH}, {dt.datetime.now()}")
 
     while True:
         try:
             time.sleep(5)
-            if not is_pc_online(MONITORING_PC_IP):
-                raise ConnectionError("切断されました。")
             dt_now = dt.datetime.now()
+            if not is_pc_online(MONITORING_PC_IP):
+                raise ConnectionError(f"切断されました。{dt_now}")
             file_name_list = os.listdir(DOWNLOAD_FOLDER_PATH)
             file_name_list = [f for f in file_name_list if not f.startswith('.')]
             # jsonファイルの読み込み
@@ -191,25 +191,26 @@ def start_monitoring():
             print("監視停止")
             break
         except ConnectionError:
-            print(f"エラーが発生しました: ConnectionError")
+            dt_now = dt.datetime.now()
+            print(f"エラーが発生しました: ConnectionError, {dt_now}")
             print(observer.is_alive())
             observer.stop()
             observer.join()
             
-            print("10分待機した後に再接続を試みます...")
+            print(f"10分待機した後に再接続を試みます..., {dt_now}")
             reconnect_wait_seconds = 10 * 60
             time.sleep(reconnect_wait_seconds)
-            print("10分待機したので再接続を試みます...")
+            print(f"10分待機したので再接続を試みます..., {dt_now}")
             while True:
                 try:
                     time.sleep(30)  # 30秒待機
                     observer = PollingObserver()
                     observer.schedule(event_handler, SHARED_FOLDER_PATH, recursive=False)
                     observer.start()
-                    print(f"再接続成功: {SHARED_FOLDER_PATH}")
+                    print(f"再接続成功: {SHARED_FOLDER_PATH}, {dt_now}")
                     break
                 except Exception as re:
-                    print(f"再接続失敗")
+                    print(f"再接続失敗, {dt_now}")
             
 
     observer.join()
